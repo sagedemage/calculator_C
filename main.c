@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include "defs.h"
 
-int num1 = 0;
-int num2 = 0;
-int solution = 0;
+double num1 = 0;
+double num2 = 0;
+double solution = 0;
 char operation = 'n';
 
 
@@ -13,24 +13,34 @@ static void print_hello (GtkWidget *widget, gpointer data) {
 	g_print("Welcome aliens!\n"); // Print output in the terminal
 }
 
-static void set_number (GtkWidget *widget, gpointer data) {
+static void set_number (GtkWidget *widget, gint data) {
 	if (operation == 'n') {
-		num1 = 1;
+		num1 = data;
 	}
 	else {
-		num2 = 1;
+		num2 = data;
 	}
 }
 
-static void set_operation (GtkWidget *widget, gpointer data) {
-	operation = ADDITION;
+static void set_operation (GtkWidget *widget, gchar data) {
+	operation = data;
 }
 
 static void result(GtkWidget *widget, gpointer data) {
 	if (operation == ADDITION) {
 		solution = num1 + num2;
+		printf("\n");
 	}
-	g_print("%i", solution);
+	if (operation == SUBTRACTION) {
+		solution = num1 - num2;
+	}
+	if (operation == MULTIPLICATION) {
+		solution = num1 * num2;
+	}
+	if (operation == DIVISION) {
+		solution = num1 / num2;
+	}
+	g_print("%lf", solution);
 	g_print("\n");
 
 	num1 = 0;
@@ -56,48 +66,81 @@ static void activate (GtkApplication *app, gpointer user_data) {
 	/* Pack the container in the window */
 	gtk_window_set_child(GTK_WINDOW(window), grid); // add the grid in the window
 
-	/* Set button label and action */
-	button = gtk_button_new_with_label("1");
-	g_signal_connect(button, "clicked", G_CALLBACK(set_number), NULL); // Connect the button to an action
-	
-	/* Place the first button in the grid cell (0, 0), and make it fill
-    * just 1 cell horizontally and vertically (ie no spanning)
-    */
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 0, 1, 1);
-
-	/* Set button label and action */
-	button = gtk_button_new_with_label("2");
-	g_signal_connect(button, "clicked", G_CALLBACK(print_hello), NULL); // Connect the button to an action
-	
-	/* Place the first button in the grid cell (0, 0), and make it fill
-    * just 1 cell horizontally and vertically (ie no spanning)
-    */
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 1, 1);
-
-	button = gtk_button_new_with_label("+");
-	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), NULL); // Connect the button to an action
-
-	/* Place the second button in the grid cell (1, 0), and make it fill
-   * just 1 cell horizontally and vertically (ie no spanning)
-   */
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 0, 1, 1);
+	/* Set button label, action, and location */
+	/* row 5 */
+	button = gtk_button_new_with_label("0");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)0);
+	gtk_grid_attach(GTK_GRID(grid), button, 1, 5, 1, 1);
 
 	button = gtk_button_new_with_label("=");
-	g_signal_connect(button, "clicked", G_CALLBACK(result), NULL); // Connect the button to an action
+	g_signal_connect(button, "clicked", G_CALLBACK(result), NULL);
+	gtk_grid_attach(GTK_GRID(grid), button, 3, 5, 1, 1);
 
-	/* Place the second button in the grid cell (1, 0), and make it fill
-   * just 1 cell horizontally and vertically (ie no spanning)
-   */
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 1, 1, 1);
+	/* row 4 */
+	button = gtk_button_new_with_label("1");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)1);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 4, 1, 1);
+
+	button = gtk_button_new_with_label("2");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)2);
+	gtk_grid_attach(GTK_GRID(grid), button, 1, 4, 1, 1);
+
+	button = gtk_button_new_with_label("3");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)3);
+	gtk_grid_attach(GTK_GRID(grid), button, 2, 4, 1, 1);
+
+	button = gtk_button_new_with_label("+");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'a');
+	gtk_grid_attach(GTK_GRID(grid), button, 3, 4, 1, 1);
+
+	/* row 3 */
+	button = gtk_button_new_with_label("4");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)4);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 3, 1, 1);
+
+	button = gtk_button_new_with_label("5");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)5);
+	gtk_grid_attach(GTK_GRID(grid), button, 1, 3, 1, 1);
+
+	button = gtk_button_new_with_label("6");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)6);
+	gtk_grid_attach(GTK_GRID(grid), button, 2, 3, 1, 1);
+
+	button = gtk_button_new_with_label("-");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'s');
+	gtk_grid_attach(GTK_GRID(grid), button, 3, 3, 1, 1);
+
+	/* row 2 */
+	button = gtk_button_new_with_label("7");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)7);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
+
+	button = gtk_button_new_with_label("8");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)8);
+	gtk_grid_attach(GTK_GRID(grid), button, 1, 2, 1, 1);
+
+	button = gtk_button_new_with_label("9");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)9);
+	gtk_grid_attach(GTK_GRID(grid), button, 2, 2, 1, 1);
+
+	button = gtk_button_new_with_label("*");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'m');
+	gtk_grid_attach(GTK_GRID(grid), button, 3, 2, 1, 1);
+
+	/* Set button label, action, and location */
+	button = gtk_button_new_with_label("/");
+	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'d');
+	gtk_grid_attach(GTK_GRID(grid), button, 3, 1, 1, 1);
 
 	button = gtk_button_new_with_label("Quit");
 	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 6, 3, 1);
 
-	/* Place the Quit button in the grid cell (0, 1), and make it
-   * span 2 columns.
-   */
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 2, 1);
-	gtk_widget_show(window);
+	button = gtk_button_new_with_label("Something");
+	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
+	gtk_grid_attach(GTK_GRID(grid), button, 0, 0, 4, 1);
+
+	gtk_widget_show(window); // Display window
 }
 
 int main(int argc, char **argv) {
