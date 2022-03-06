@@ -1,12 +1,13 @@
 #include <gtk/gtk.h>
-#include <string.h>
-#include <stdio.h>
 #include "defs.h"
+#include <string.h>
 
 double num1 = 0;
 double num2 = 0;
 double solution = 0;
 char operation = 'n';
+GtkEntryBuffer* buffer;
+char text[] = "";
 
 
 static void print_hello (GtkWidget *widget, gpointer data) {
@@ -14,16 +15,38 @@ static void print_hello (GtkWidget *widget, gpointer data) {
 }
 
 static void set_number (GtkWidget *widget, gint data) {
+	sprintf(text,"%d",data);
 	if (operation == 'n') {
 		num1 = data;
+		gtk_entry_buffer_set_text(buffer, text, -1);
 	}
 	else {
 		num2 = data;
+		gtk_entry_buffer_insert_text(buffer, 2, text, -1);
 	}
+	g_print("%i", data);
+	g_print(" ");
 }
 
 static void set_operation (GtkWidget *widget, gchar data) {
 	operation = data;
+	if (operation == ADDITION) {
+		g_print("+");
+		gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
+	}
+	if (operation == SUBTRACTION) {
+		g_print("-");
+		gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
+	}
+	if (operation == MULTIPLICATION) {
+		g_print("*");
+		gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
+	}
+	if (operation == DIVISION) {
+		g_print("/");
+		gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
+	}
+	printf(" ");
 }
 
 static void result(GtkWidget *widget, gpointer data) {
@@ -40,8 +63,11 @@ static void result(GtkWidget *widget, gpointer data) {
 	if (operation == DIVISION) {
 		solution = num1 / num2;
 	}
+	g_print("\n");
 	g_print("%lf", solution);
 	g_print("\n");
+	sprintf(text,"%f",solution);
+	gtk_entry_buffer_set_text(buffer, text, -1);
 
 	num1 = 0;
 	num2 = 0;
@@ -50,9 +76,11 @@ static void result(GtkWidget *widget, gpointer data) {
 }
 
 static void activate (GtkApplication *app, gpointer user_data) {
-	GtkWidget *window; //dereference window
-	GtkWidget *grid; 
-	GtkWidget *button; //dereference button
+	/* GUI Widgets */
+	GtkWidget *window, *grid, *button, *entry;
+
+	/* Create Entry Buffer object */
+	buffer = gtk_entry_buffer_new("", -1);
 
 	/* Create window and set its title */
 	window = gtk_application_window_new(app);
@@ -65,6 +93,10 @@ static void activate (GtkApplication *app, gpointer user_data) {
 
 	/* Pack the container in the window */
 	gtk_window_set_child(GTK_WINDOW(window), grid); // add the grid in the window
+
+	/* Display the output of the calculation */
+	entry = gtk_entry_new_with_buffer(buffer);
+	gtk_grid_attach(GTK_GRID(grid), entry, 0, 0, 4, 1);
 
 	/* Set button label, action, and location */
 	/* row 5 */
@@ -135,10 +167,6 @@ static void activate (GtkApplication *app, gpointer user_data) {
 	button = gtk_button_new_with_label("Quit");
 	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
 	gtk_grid_attach(GTK_GRID(grid), button, 0, 6, 3, 1);
-
-	button = gtk_button_new_with_label("Something");
-	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 0, 4, 1);
 
 	gtk_widget_show(window); // Display window
 }
