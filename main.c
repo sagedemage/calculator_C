@@ -10,10 +10,6 @@ GtkEntryBuffer* buffer;
 char text[] = "";
 
 
-static void print_hello (GtkWidget *widget, gpointer data) {
-	g_print("Welcome aliens!\n"); // Print output in the terminal
-}
-
 static void set_number (GtkWidget *widget, gint data) {
 	sprintf(text,"%d",data);
 	if (operation == 'n') {
@@ -31,28 +27,22 @@ static void set_number (GtkWidget *widget, gint data) {
 static void set_operation (GtkWidget *widget, gchar data) {
 	operation = data;
 	if (operation == ADDITION) {
-		g_print("+");
 		gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
 	}
 	if (operation == SUBTRACTION) {
-		g_print("-");
 		gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
 	}
 	if (operation == MULTIPLICATION) {
-		g_print("*");
 		gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
 	}
 	if (operation == DIVISION) {
-		g_print("/");
 		gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
 	}
-	printf(" ");
 }
 
 static void result(GtkWidget *widget, gpointer data) {
 	if (operation == ADDITION) {
 		solution = num1 + num2;
-		printf("\n");
 	}
 	if (operation == SUBTRACTION) {
 		solution = num1 - num2;
@@ -63,9 +53,6 @@ static void result(GtkWidget *widget, gpointer data) {
 	if (operation == DIVISION) {
 		solution = num1 / num2;
 	}
-	g_print("\n");
-	g_print("%lf", solution);
-	g_print("\n");
 	sprintf(text,"%f",solution);
 	gtk_entry_buffer_set_text(buffer, text, -1);
 
@@ -78,15 +65,32 @@ static void result(GtkWidget *widget, gpointer data) {
 static void activate (GtkApplication *app, gpointer user_data) {
 	/* GUI Widgets */
 	GtkWidget *window, *grid, *button, *entry;
+	GtkGrid *grid2;
+	// Scaling 
+	static int wid = 2; // width
+	static int hei = 2; // height
+	static int row1 = 0;
+	static int row2 = 2;
+	static int row3 = 4;
+	static int row4 = 6;
+	static int row5 = 8;
+	static int row6 = 10;
+	static int row7 = 12;
+
+	static int col1 = 0;
+	static int col2 = 2;
+	static int col3 = 4;
+	static int col4 = 6;
 
 	/* Create Entry Buffer object */
 	buffer = gtk_entry_buffer_new("", -1);
 
 	/* Create window and set its title */
 	window = gtk_application_window_new(app);
-	gtk_window_set_title(GTK_WINDOW (window), "Calculator");
+	gtk_window_set_title(GTK_WINDOW (window), "    Calculator    ");
 
 	gtk_window_set_default_size(GTK_WINDOW(window), WINDOW_WIDTH, WINDOW_HEIGHT); //Set window size
+	gtk_window_set_resizable (GTK_WINDOW(window), FALSE);
 
 	/* Here we construct the container that is going pack our buttons */
 	grid = gtk_grid_new();
@@ -95,78 +99,80 @@ static void activate (GtkApplication *app, gpointer user_data) {
 	gtk_window_set_child(GTK_WINDOW(window), grid); // add the grid in the window
 
 	/* Display the output of the calculation */
+	/* row 1 */
 	entry = gtk_entry_new_with_buffer(buffer);
-	gtk_grid_attach(GTK_GRID(grid), entry, 0, 0, 4, 1);
+	gtk_grid_attach(GTK_GRID(grid), entry, col1, row1, 8, 1);
 
 	/* Set button label, action, and location */
-	/* row 5 */
+	/* row 7 */
+	button = gtk_button_new_with_label("Quit");
+	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
+	gtk_grid_attach(GTK_GRID(grid), button, col1, row7, 6, 1);
+
+	/* row 6 */
 	button = gtk_button_new_with_label("0");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)0);
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 5, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col2, row6, wid, hei);
 
 	button = gtk_button_new_with_label("=");
 	g_signal_connect(button, "clicked", G_CALLBACK(result), NULL);
-	gtk_grid_attach(GTK_GRID(grid), button, 3, 5, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col4, row6, wid, hei);
 
-	/* row 4 */
+	/* row 5 */
 	button = gtk_button_new_with_label("1");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)1);
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 4, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col1, row5, wid, hei);
 
 	button = gtk_button_new_with_label("2");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)2);
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 4, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col2, row5, wid, hei);
 
 	button = gtk_button_new_with_label("3");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)3);
-	gtk_grid_attach(GTK_GRID(grid), button, 2, 4, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col3, row5, wid, hei);
 
 	button = gtk_button_new_with_label("+");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'a');
-	gtk_grid_attach(GTK_GRID(grid), button, 3, 4, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col4, row5, wid, hei);
 
-	/* row 3 */
+	/* row 4 */
 	button = gtk_button_new_with_label("4");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)4);
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 3, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col1, row4, wid, hei);
 
 	button = gtk_button_new_with_label("5");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)5);
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 3, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col2, row4, wid, hei);
 
 	button = gtk_button_new_with_label("6");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)6);
-	gtk_grid_attach(GTK_GRID(grid), button, 2, 3, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col3, row4, wid, hei);
 
 	button = gtk_button_new_with_label("-");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'s');
-	gtk_grid_attach(GTK_GRID(grid), button, 3, 3, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col4, row4, wid, hei);
 
-	/* row 2 */
+	/* row 3 */
 	button = gtk_button_new_with_label("7");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)7);
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col1, row3, wid, hei);
 
 	button = gtk_button_new_with_label("8");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)8);
-	gtk_grid_attach(GTK_GRID(grid), button, 1, 2, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col2, row3, wid, hei);
 
 	button = gtk_button_new_with_label("9");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_number), (void *)9);
-	gtk_grid_attach(GTK_GRID(grid), button, 2, 2, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col3, row3, wid, hei);
 
 	button = gtk_button_new_with_label("*");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'m');
-	gtk_grid_attach(GTK_GRID(grid), button, 3, 2, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col4, row3, wid, hei);
 
-	/* Set button label, action, and location */
+	/* row 2 */
 	button = gtk_button_new_with_label("/");
 	g_signal_connect(button, "clicked", G_CALLBACK(set_operation), (void *)'d');
-	gtk_grid_attach(GTK_GRID(grid), button, 3, 1, 1, 1);
-
-	button = gtk_button_new_with_label("Quit");
-	g_signal_connect_swapped(button, "clicked", G_CALLBACK(gtk_window_destroy), window);
-	gtk_grid_attach(GTK_GRID(grid), button, 0, 6, 3, 1);
+	gtk_grid_attach(GTK_GRID(grid), button, col4, row2, wid, hei);
 
 	gtk_widget_show(window); // Display window
 }

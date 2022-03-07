@@ -4,8 +4,8 @@
 #include <string.h>
 
 // width and height of the window
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
+const int WINDOW_WIDTH = 1;
+const int WINDOW_HEIGHT = 1;
 char ADDITION = 'a';
 char SUBTRACTION = 's';
 char MULTIPLICATION = 'm';
