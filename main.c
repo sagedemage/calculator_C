@@ -24,29 +24,22 @@ static void set_number (GtkWidget *widget, gint data) {
 		num2 = data;
 		gtk_entry_buffer_insert_text(buffer, 2, text, -1);
 	}
-	g_print("%i", data);
-	g_print(" ");
 }
 
 static void set_operation (GtkWidget *widget, gchar data) {
 	operation = data;
 	if (operation == ADDITION) {
-		g_print("+");
 		gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
 	}
 	if (operation == SUBTRACTION) {
-		g_print("-");
 		gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
 	}
 	if (operation == MULTIPLICATION) {
-		g_print("*");
 		gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
 	}
 	if (operation == DIVISION) {
-		g_print("/");
 		gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
 	}
-	printf(" ");
 }
 
 static void result(GtkWidget *widget, gpointer data) {
@@ -63,9 +56,6 @@ static void result(GtkWidget *widget, gpointer data) {
 	if (operation == DIVISION) {
 		solution = num1 / num2;
 	}
-	g_print("\n");
-	g_print("%lf", solution);
-	g_print("\n");
 	sprintf(text,"%f",solution);
 	gtk_entry_buffer_set_text(buffer, text, -1);
 
