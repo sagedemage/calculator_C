@@ -8,11 +8,6 @@ double solution = 0;
 char operation = 'n';
 GtkEntryBuffer* buffer;
 
-
-static void print_hello (GtkWidget *widget, gpointer data) {
-	g_print("Welcome aliens!\n"); // Print output in the terminal
-}
-
 static void set_number (GtkWidget *widget, gint data) {
 	// string converison 
 	char op[] = "";
