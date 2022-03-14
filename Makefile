@@ -5,11 +5,8 @@ CFLAGS= -Wall -Werror
 OBJ = main.o
 LIBS= `pkg-config --cflags --libs gtk4`
 
-output: main.o
-	$(CC) main.o -o out $(LIBS)
-
-main.o: main.c
-	$(CC) -c main.c $(LIBS)
+output: 
+	$(CC) main.c -o calculator $(LIBS)
 
 clean:
-	rm *.o
+	rm calculator

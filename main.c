@@ -1,73 +1,75 @@
 #include <gtk/gtk.h>
 #include "defs.h"
-#include <string.h>
 
 double num1 = 0;
 double num2 = 0;
 double solution = 0;
 char operation = 'n';
 GtkEntryBuffer* buffer;
-char text[] = "";
-
-
-static void print_hello (GtkWidget *widget, gpointer data) {
-	g_print("Welcome aliens!\n"); // Print output in the terminal
-}
 
 static void set_number (GtkWidget *widget, gint data) {
-	sprintf(text,"%d",data);
-	if (operation == 'n') {
+	// string converison 
+	char op[] = "";
+	sprintf(op,"%d",data);
+
+	if (operation == 'n' && num1 == 0) {
+		/* Set a value for the first number */
 		num1 = data;
-		gtk_entry_buffer_set_text(buffer, text, -1);
+		gtk_entry_buffer_set_text(buffer, op, -1);
 	}
-	else {
+	else if (operation != 'n' && num2 == 0) {
+		/* Set a value for the second number */
 		num2 = data;
-		gtk_entry_buffer_insert_text(buffer, 2, text, -1);
+		gtk_entry_buffer_insert_text(buffer, 2, op, -1);
 	}
-	g_print("%i", data);
-	g_print(" ");
 }
 
 static void set_operation (GtkWidget *widget, gchar data) {
-	operation = data;
-	if (operation == ADDITION) {
-		g_print("+");
-		gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
+	if (operation == 'n') {
+		operation = data;
+		if (operation == ADDITION) {
+			/* Show addition symbol on the buffer */
+			gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
+		}
+		if (operation == SUBTRACTION) {
+			/* Show substraction symbol on the buffer */
+			gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
+		}
+		if (operation == MULTIPLICATION) {
+			/* Show the multiplication symbol on the buffer */
+			gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
+		}
+		if (operation == DIVISION) {
+			/* Show the division symbol on the buffer */
+			gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
+		}
 	}
-	if (operation == SUBTRACTION) {
-		g_print("-");
-		gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
-	}
-	if (operation == MULTIPLICATION) {
-		g_print("*");
-		gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
-	}
-	if (operation == DIVISION) {
-		g_print("/");
-		gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
-	}
-	printf(" ");
 }
 
 static void result(GtkWidget *widget, gpointer data) {
 	if (operation == ADDITION) {
+		/* Result of additon */
 		solution = num1 + num2;
 		printf("\n");
 	}
 	if (operation == SUBTRACTION) {
+		/* Result of substraction */
 		solution = num1 - num2;
 	}
 	if (operation == MULTIPLICATION) {
+		/* Result of multiplication */
 		solution = num1 * num2;
 	}
 	if (operation == DIVISION) {
+		/* Result of division */
 		solution = num1 / num2;
 	}
-	g_print("\n");
-	g_print("%lf", solution);
-	g_print("\n");
-	sprintf(text,"%f",solution);
-	gtk_entry_buffer_set_text(buffer, text, -1);
+
+	// string converison 
+	char sol[] = "none";
+	sprintf(sol,"%f",solution);
+
+	gtk_entry_buffer_set_text(buffer, sol, -1);
 
 	num1 = 0;
 	num2 = 0;
