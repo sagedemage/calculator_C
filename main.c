@@ -1,6 +1,5 @@
 #include <gtk/gtk.h>
 #include "defs.h"
-#include <string.h>
 
 double num1 = 0;
 double num2 = 0;
