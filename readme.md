@@ -1,2 +1,2 @@
 # Calculator
-Calculator program written in C. 
+Simple calculator application written in C using GTK4. 
