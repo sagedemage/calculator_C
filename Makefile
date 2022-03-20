@@ -6,7 +6,7 @@ OBJ = main.o
 LIBS= `pkg-config --cflags --libs gtk4`
 
 output: 
-	$(CC) main.c -o calculator $(LIBS)
+	$(CC) src/main.c -o calculator $(LIBS)
 
 clean:
 	rm calculator
