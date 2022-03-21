@@ -50,7 +50,6 @@ static void result(GtkWidget *widget, gpointer data) {
 	if (operation == ADDITION) {
 		/* Result of additon */
 		solution = num1 + num2;
-		printf("\n");
 	}
 	if (operation == SUBTRACTION) {
 		/* Result of substraction */
