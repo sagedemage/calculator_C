@@ -17,10 +17,16 @@ static void set_number (GtkWidget *widget, gint data) {
 		num1 = data;
 		gtk_entry_buffer_set_text(buffer, op, -1);
 	}
-	else if (operation != 'n' && num2 == 0) {
+	else if ( operation == 'n' && num1 != 0) {
+		/* Set a value for the first number */
+		num1 = data;
+		//gtk_entry_buffer_set_text(buffer, "", -1);
+		gtk_entry_buffer_insert_text(buffer, -1, op, -1);
+	}
+	else if (operation != 'n') {
 		/* Set a value for the second number */
 		num2 = data;
-		gtk_entry_buffer_insert_text(buffer, 2, op, -1);
+		gtk_entry_buffer_insert_text(buffer, -1, op, -1);
 	}
 }
 
@@ -29,19 +35,19 @@ static void set_operation (GtkWidget *widget, gchar data) {
 		operation = data;
 		if (operation == ADDITION) {
 			/* Show addition symbol on the buffer */
-			gtk_entry_buffer_insert_text(buffer, 1, "+", -1);
+			gtk_entry_buffer_insert_text(buffer, -1, "+", -1);
 		}
 		if (operation == SUBTRACTION) {
 			/* Show substraction symbol on the buffer */
-			gtk_entry_buffer_insert_text(buffer, 1, "-", -1);
+			gtk_entry_buffer_insert_text(buffer, -1, "-", -1);
 		}
 		if (operation == MULTIPLICATION) {
 			/* Show the multiplication symbol on the buffer */
-			gtk_entry_buffer_insert_text(buffer, 1, "*", -1);
+			gtk_entry_buffer_insert_text(buffer, -1, "*", -1);
 		}
 		if (operation == DIVISION) {
 			/* Show the division symbol on the buffer */
-			gtk_entry_buffer_insert_text(buffer, 1, "/", -1);
+			gtk_entry_buffer_insert_text(buffer, -1, "/", -1);
 		}
 	}
 }
